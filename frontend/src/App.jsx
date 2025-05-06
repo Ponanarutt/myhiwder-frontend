@@ -16,22 +16,22 @@ function App() {
     >
       <Header settopic={settopic} />
       {topic === "Home" && (
-        <div className="overflow-x-auto  ">
+        <div className="overflow-x-auto mt-3 ">
           <Homepage />
         </div>
       )}
       {topic === "About" && (
         <div className="overflow-x-auto  ">
-          <p>
+          <div>
             <About />
-          </p>
+          </div>
         </div>
       )}
       {topic === "Order" && (
         <div className="overflow-x-auto  ">
-          <p>
+          <div>
             <OrderForm />
-          </p>
+          </div>
         </div>
       )}
     </div>

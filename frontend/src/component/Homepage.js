@@ -1,88 +1,170 @@
 "use client";
-import React from "react";
-import { useEffect, useState, useMemo } from "react";
-import Header from "./header";
+import React, { useState, useMemo } from "react";
 
-const content = ["0", "1", "2", "3"];
+const randomShop = () => {
+  const shops = [
+    "อร่อยเด็ด", "ข้าวแกงคุณยาย", "ก๋วยเตี๋ยวฮ่องเต้",
+    "ข้าวหมูกรอบ", "อาหารตามสั่ง 24 ชม.", "ต้มยำรสจัด", "ครัวน้องมายด์"
+  ];
+  return shops[Math.floor(Math.random() * shops.length)];
+};
+
+const mainMenuOptions = [
+  "ข้าวกะเพรา", "ก๋วยเตี๋ยวน้ำ", "ข้าวไข่เจียว", "ราดหน้า",
+  "ผัดพริกแกง", "ข้าวหมูทอด", "สุกี้น้ำ", "ยำวุ้นเส้น"
+];
+
+const spiceLevels = ["ปกติ", "ไม่เผ็ด", "เผ็ดน้อย", "เผ็ดมาก"];
+
+const addonGroups = {
+  type: ["น้ำ", "แห้ง"],
+  rice: ["ข้าว", "ไม่เอาข้าว"],
+  egg: ["ไข่ดาว", "ไข่เจียว"],
+  noodle: ["หมี่เหลือง", "หมี่ขาว", "เส้นเล็ก", "เส้นใหญ่"]
+};
+
+const autoSubmit = (data) => {
+  console.log("✅ Auto-submit:", data);
+};
 
 const Homepage = () => {
-  const [indexcotent, setindexcontent] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setindexcontent((index) => (index + 1) % 4);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
   const days = useMemo(() => {
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      const day = date.getDate().toString().padStart(2, "0");
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const buddhistYear = (date.getFullYear() + 543).toString();
-      return {
-        label: date.toLocaleDateString("th-TH", {
-          weekday: "short",
-          day: "numeric",
-          month: "short",
-        }),
-        date: date.toISOString().split("T")[0],
-        id: `${day}${month}${buddhistYear.slice(-4)}`,
-      };
-    });
+    const weekdays = ["จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์", "อาทิตย์"];
+    return weekdays.map((day) => ({
+      day,
+      shops: [
+        {
+          shopName: randomShop(),
+          menu: "",
+          spiceLevel: "",
+          isSpecial: false,
+          noVeg: false,
+          addons: { type: "", rice: "", egg: "", noodle: "" },
+        },
+        {
+          shopName: randomShop(),
+          menu: "",
+          spiceLevel: "",
+          isSpecial: false,
+          noVeg: false,
+          addons: { type: "", rice: "", egg: "", noodle: "" },
+        },
+      ],
+    }));
   }, []);
+
+  const [menuData, setMenuData] = useState(days);
+
+  const handleChange = (dayIdx, shopIdx, field, value) => {
+    const updated = [...menuData];
+    updated[dayIdx].shops[shopIdx][field] = value;
+    setMenuData(updated);
+    autoSubmit(updated);
+  };
+
+  const handleAddonGroupChange = (dayIdx, shopIdx, group, value) => {
+    const updated = [...menuData];
+    updated[dayIdx].shops[shopIdx].addons[group] = value;
+    setMenuData(updated);
+    autoSubmit(updated);
+  };
 
   return (
-    <div className="h-[calc(100vh-67px)]   bg-transparent p-6 font-sans grid grid-rows-[1fr_2fr] gap-6 ">
-      <div className="bg-gray-400 rounded-2xl p-6 shadow-lg text-xl font-bold text-center flex flex-col justify-between h-full border border-black">
-        <div className="overflow-hidden w-full relative h-[60px]">
-          <div
-            className="flex transition-transform duration-500 h-full"
-            style={{ transform: `translateX(-${indexcotent * 100}%)` }}
-          >
-            {content.map((item, index) => (
-              <div
-                key={index}
-                className="w-full flex-shrink-0 flex items-center justify-center"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="flex justify-center mt-4 space-x-2 ">
-          {content.map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                indexcotent === index ? "bg-white" : "bg-gray-700"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
+    <div className="p-6 max-w-7xl mx-auto bg-white rounded-xl shadow space-y-6">
+      <h1 className="text-3xl font-bold text-center text-pink-600">🍽️ กรอกเมนูอาหารรายวัน</h1>
 
-      <div className="bg-transparent rounded-2xl grid grid-cols-10 grid-rows-2 gap-4">
-        {days.map((day, index) => (
-          <div
-            key={day.date}
-            className={`p-4 border border-black rounded-xl cursor-pointer text-center transition-all duration-200 
-                  ${
-                    index === 0
-                      ? "bg-gray-500 text-white col-span-4 row-span-2 opacity-70"
-                      : "bg-white col-span-2 row-span-1"
-                  } 
-                  ${day.ordered ? "border-2 border-green-500" : ""}`}
-          >
-            {index === 0 ? (
-              <div className="flex">{day.label}</div>
-            ) : (
-              <div className="font-semibold">{day.label}</div>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-sm text-gray-700 border border-gray-300 rounded-md">
+          <thead className="bg-pink-100 text-pink-700">
+            <tr>
+              <th className="px-4 py-2 border">วัน</th>
+              <th className="px-4 py-2 border">ร้าน</th>
+              <th className="px-4 py-2 border">เมนู</th>
+              <th className="px-4 py-2 border">ออฟชันเสริม</th>
+              <th className="px-4 py-2 border">ระดับความเผ็ด</th>
+              <th className="px-4 py-2 border">ไม่ใส่ผัก</th>
+              <th className="px-4 py-2 border">พิเศษ</th>
+
+
+            </tr>
+          </thead>
+          <tbody>
+            {menuData.map((dayItem, dayIdx) =>
+              dayItem.shops.map((shop, shopIdx) => (
+                <tr key={`${dayIdx}-${shopIdx}`} className="even:bg-gray-50">
+                  <td className="px-4 py-2 border">{shopIdx === 0 ? dayItem.day : ""}</td>
+                 
+                  <td className="px-4 py-2 border">{shop.shopName}</td>
+                  <td className="px-2 py-2 border">
+                    <select
+                      className="w-full border rounded px-2 py-1"
+                      value={shop.menu}
+                      onChange={(e) => handleChange(dayIdx, shopIdx, "menu", e.target.value)}
+                    >
+                      <option value="">เลือกเมนู</option>
+                      {mainMenuOptions.map((menu, i) => (
+                        <option key={i} value={menu}>{menu}</option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="px-2 py-2 border">
+                    <select
+                      className="w-full border rounded px-2 py-1"
+                      onChange={(e) => {
+                        const selected = e.target.value;
+                        Object.entries(addonGroups).forEach(([group, options]) => {
+                          if (options.includes(selected)) {
+                            handleAddonGroupChange(dayIdx, shopIdx, group, selected);
+                          }
+                        });
+                      }}
+                    >
+                      <option value="">เลือกออฟชัน</option>
+                      {Object.entries(addonGroups).map(([group, options]) => (
+                        <optgroup key={group} label={group}>
+                          {options.map((option, i) => (
+                            <option key={i} value={option}>{option}</option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="px-2 py-2 border">
+                    <select
+                      className="w-full border rounded px-2 py-1"
+                      value={shop.spiceLevel}
+                      onChange={(e) => handleChange(dayIdx, shopIdx, "spiceLevel", e.target.value)}
+                    >
+                      <option value="">เลือก</option>
+                      {spiceLevels.map((level, i) => (
+                        <option key={i} value={level}>{level}</option>
+                      ))}
+                    </select>
+                  </td>
+                  
+                  <td className="px-4 py-2 border text-center">
+                    <input
+                      type="checkbox"
+                      className="accent-pink-500"
+                      checked={shop.noVeg}
+                      onChange={(e) => handleChange(dayIdx, shopIdx, "noVeg", e.target.checked)}
+                    />
+                  </td>
+
+                  <td className="px-4 py-2 border text-center">
+                    <input
+                      type="checkbox"
+                      className="accent-pink-500"
+                      checked={shop.isSpecial}
+                      onChange={(e) => handleChange(dayIdx, shopIdx, "isSpecial", e.target.checked)}
+                    />
+                  </td>
+
+                </tr>
+              ))
             )}
-          </div>
-        ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
