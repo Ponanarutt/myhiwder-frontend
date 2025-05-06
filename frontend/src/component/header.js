@@ -34,13 +34,13 @@ const Header = ({ settopic }) => {
         </button>
         {isOpen && (
           <h1 className="text-lg font-bold tracking-tight text-[#123458] uppercase">
-            MyHeyder
+            Myhiwder
           </h1>
         )}
       </div>
 
       {/* Nav */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col  gap-4">
         {navItems.map((item) => (
           <button
             key={item.key}
