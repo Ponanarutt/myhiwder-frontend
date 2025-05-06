@@ -17,17 +17,17 @@ const mainMenuOptions = [
 const spiceLevels = ["ปกติ", "ไม่เผ็ด", "เผ็ดน้อย", "เผ็ดมาก"];
 
 const addonGroups = {
-  type: ["น้ำ", "แห้ง"],
-  rice: ["ข้าว", "ไม่เอาข้าว"],
-  egg: ["ไข่ดาว", "ไข่เจียว"],
-  noodle: ["หมี่เหลือง", "หมี่ขาว", "เส้นเล็ก", "เส้นใหญ่"]
+  ประเภท: ["น้ำ", "แห้ง"],
+  ข้าว: ["ข้าว", "ไม่เอาข้าว"],
+  ไข่: ["ไข่ดาว", "ไข่เจียว"],
+  เส้น: ["หมี่เหลือง", "หมี่ขาว", "เส้นเล็ก", "เส้นใหญ่"]
 };
 
 const autoSubmit = (data) => {
   console.log("✅ Auto-submit:", data);
 };
 
-const Homepage = () => {
+const Orderpage = () => {
   const days = useMemo(() => {
     const weekdays = ["จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์", "อาทิตย์"];
     return weekdays.map((day) => ({
@@ -39,7 +39,7 @@ const Homepage = () => {
           spiceLevel: "",
           isSpecial: false,
           noVeg: false,
-          addons: { type: "", rice: "", egg: "", noodle: "" },
+          addons: { ประเภท: "", ข้าว: "", ไข่: "", เส้น: "" },
         },
         {
           shopName: randomShop(),
@@ -47,7 +47,7 @@ const Homepage = () => {
           spiceLevel: "",
           isSpecial: false,
           noVeg: false,
-          addons: { type: "", rice: "", egg: "", noodle: "" },
+          addons: { ประเภท: "", ข้าว: "", ไข่: "", เส้น: "" },
         },
       ],
     }));
@@ -70,12 +70,10 @@ const Homepage = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-white rounded-xl shadow space-y-6">
-      <h1 className="text-3xl font-bold text-center text-pink-600">🍽️ กรอกเมนูอาหารรายวัน</h1>
-
+    <div className="w-full min-h-screen p-4 bg-white">
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm text-gray-700 border border-gray-300 rounded-md">
-          <thead className="bg-pink-100 text-pink-700">
+        <table className="min-w-full text-sm text-gray-700 border border-gray-300 rounded-md bg-white shadow">
+          <thead className="bg-pink-100 text-gray-800 font-semibold">
             <tr>
               <th className="px-4 py-2 border">วัน</th>
               <th className="px-4 py-2 border">ร้าน</th>
@@ -84,8 +82,6 @@ const Homepage = () => {
               <th className="px-4 py-2 border">ระดับความเผ็ด</th>
               <th className="px-4 py-2 border">ไม่ใส่ผัก</th>
               <th className="px-4 py-2 border">พิเศษ</th>
-
-
             </tr>
           </thead>
           <tbody>
@@ -93,8 +89,9 @@ const Homepage = () => {
               dayItem.shops.map((shop, shopIdx) => (
                 <tr key={`${dayIdx}-${shopIdx}`} className="even:bg-gray-50">
                   <td className="px-4 py-2 border">{shopIdx === 0 ? dayItem.day : ""}</td>
-                 
                   <td className="px-4 py-2 border">{shop.shopName}</td>
+
+                  {/* เมนู */}
                   <td className="px-2 py-2 border">
                     <select
                       className="w-full border rounded px-2 py-1"
@@ -107,28 +104,27 @@ const Homepage = () => {
                       ))}
                     </select>
                   </td>
+
+                  {/* ออฟชันเสริม */}
                   <td className="px-2 py-2 border">
-                    <select
-                      className="w-full border rounded px-2 py-1"
-                      onChange={(e) => {
-                        const selected = e.target.value;
-                        Object.entries(addonGroups).forEach(([group, options]) => {
-                          if (options.includes(selected)) {
-                            handleAddonGroupChange(dayIdx, shopIdx, group, selected);
-                          }
-                        });
-                      }}
-                    >
-                      <option value="">เลือกออฟชัน</option>
+                    <div className="grid grid-cols-2 gap-2">
                       {Object.entries(addonGroups).map(([group, options]) => (
-                        <optgroup key={group} label={group}>
+                        <select
+                          key={group}
+                          className="w-full border rounded px-2 py-1"
+                          value={shop.addons[group]}
+                          onChange={(e) => handleAddonGroupChange(dayIdx, shopIdx, group, e.target.value)}
+                        >
+                          <option value="">{group}</option>
                           {options.map((option, i) => (
                             <option key={i} value={option}>{option}</option>
                           ))}
-                        </optgroup>
+                        </select>
                       ))}
-                    </select>
+                    </div>
                   </td>
+
+                  {/* ความเผ็ด */}
                   <td className="px-2 py-2 border">
                     <select
                       className="w-full border rounded px-2 py-1"
@@ -141,7 +137,8 @@ const Homepage = () => {
                       ))}
                     </select>
                   </td>
-                  
+
+                  {/* ไม่ใส่ผัก */}
                   <td className="px-4 py-2 border text-center">
                     <input
                       type="checkbox"
@@ -151,6 +148,7 @@ const Homepage = () => {
                     />
                   </td>
 
+                  {/* พิเศษ */}
                   <td className="px-4 py-2 border text-center">
                     <input
                       type="checkbox"
@@ -159,7 +157,6 @@ const Homepage = () => {
                       onChange={(e) => handleChange(dayIdx, shopIdx, "isSpecial", e.target.checked)}
                     />
                   </td>
-
                 </tr>
               ))
             )}
@@ -170,4 +167,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default Orderpage;

@@ -1,15 +1,33 @@
 import React from "react";
+import { IoHomeOutline, IoRibbonOutline } from "react-icons/io5";
+import { FaRegClipboard } from "react-icons/fa";
+import { LuClock1 } from "react-icons/lu";
 
-const Header = ({settopic}) => {
+const navItems = [
+  { label: "Home", icon: <IoHomeOutline />, key: "Home" },
+  { label: "Order", icon: <FaRegClipboard />, key: "Order" },
+  { label: "History", icon: <LuClock1 />, key: "History" },
+  { label: "About", icon: <IoRibbonOutline />, key: "About" },
+];
+
+const Header = ({ settopic }) => {
   return (
-    <div className=" h-[35px] w-full px-8 font-semibold pt-10 flex justify-between items-center z-50 bg-transparent text-white">
-      <div className="text-3xl text-black">MYHEYDER</div>
-      <div className="flex gap-x-6 border px-3 rounded-md py-1">
-        <p onClick={() => settopic("Home")} className="border rounded-md bg-[#DA4A7A] px-1">Home</p>
-        <p onClick={() => settopic("Order")}  className="border rounded-md bg-[#DA4A7A] px-1">Order</p>
-        <p  onClick={() => settopic("History")}  className="border rounded-md bg-[#DA4A7A] px-1">History</p>
-        <p  onClick={() => settopic("Account")}  className="border rounded-md bg-[#DA4A7A] px-1">Account</p>
-        <p  onClick={() => settopic("About") } className="border rounded-md bg-[#DA4A7A] px-1">About</p>
+    <div className="h-full w-64 bg-gradient-to-b from-pink-500 to-pink-300 text-white shadow-xl flex flex-col px-6 py-8">
+      {/* Logo / Title */}
+      <div className="text-3xl font-extrabold mb-10 tracking-wide">MYHEYDER</div>
+
+      {/* Navigation Buttons */}
+      <div className="flex flex-col gap-4">
+        {navItems.map((item) => (
+          <button
+            key={item.key}
+            onClick={() => settopic(item.key)}
+            className="flex items-center gap-3 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium"
+          >
+            <span className="text-xl">{item.icon}</span>
+            <span>{item.label}</span>
+          </button>
+        ))}
       </div>
     </div>
   );
