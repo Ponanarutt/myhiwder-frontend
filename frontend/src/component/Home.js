@@ -39,7 +39,7 @@ const Homepage = () => {
         </div>
     
         {/* แจ้งเตือน */}
-        <div className="h-[10vh] bg-[#030303] text-white flex flex-col items-center justify-center text-center px-4">
+        <div className="h-[10vh] bg-gray-700 bg-opacity-90 text-white flex flex-col items-center justify-center text-center px-4">
           <p className="text-base font-medium">วันนี้คุณสามารถเลือกจองอาหารจากร้านที่เปิดให้บริการด้านล่างได้</p>
           <p className="text-sm text-pink-300">⏰ จองได้ก่อน 9:45 น. เท่านั้น</p>
         </div>
@@ -51,7 +51,7 @@ const Homepage = () => {
               มื้อเที่ยงของคุณวันนี้ 🍱
             </h1>
     
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-6 ">
               {shops.map((shop, idx) => (
                 <div
                   key={idx}
