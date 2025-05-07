@@ -44,12 +44,12 @@ const HomeA = () => {
           >
             Create
           </button>
-          <button
+          {/* <button
             onClick={() => setTopicA("History")}
             className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-[#123458] hover:bg-[#D4C9BE]/50 transition"
           >
             History
-          </button>
+          </button> */}
         </div>
       </div>
       {TopicA === "Home" ? (
