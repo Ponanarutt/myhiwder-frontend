@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-
+import CreatePage from "./Create";
 import MainA from "./mainA";
 import OrderA from "./OrderA";
 import { useState } from "react";
@@ -57,7 +57,7 @@ const HomeA = () => {
       ) : TopicA === "Order" ? (
         <OrderA className="w-full" />
       ) : (
-        <div></div>
+        <CreatePage/>
       )}
     </div>
   );
