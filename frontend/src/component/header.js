@@ -16,7 +16,7 @@ const navItems = [
 
 
 const Header = ({ settopic }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
     if (window.innerWidth >= 640) {
