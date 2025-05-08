@@ -15,6 +15,18 @@ const addonGroups = {
   เส้น: ["หมี่เหลือง", "หมี่ขาว", "เส้นเล็ก", "เส้นใหญ่"],
 };
 
+const colors = {
+  background: "#f9f9f9",
+  headerBackground: "#0a2240", // สีน้ำเงินเข้มสำหรับส่วนหัวตาราง
+  headerText: "#ffffff",
+  rowEven: "#ffffff",
+  rowOdd: "#f5f5f5",
+  text: "#333333",
+  border: "#e0e0e0",
+  selectBg: "#ffffff",
+  borderRow: "#e5e5e5", // สีเส้นแบ่งแถว
+};
+
 const Homepage = () => {
   const [shops, setShops] = useState(defaultShops);
 
@@ -29,10 +41,13 @@ const Homepage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen font-sans w-full">
+    <div
+      className="flex flex-col min-h-screen font-sans w-full "
+      style={{ backgroundColor: colors.background }}
+    >
       {/* พื้นที่โฆษณา */}
-      <div className="h-[25vh] bg-gradient-to-b from-[#D4C9BE] to-[#F1EFEC] flex items-center justify-center">
-        <p className="text-3xl font-bold text-[#123458] tracking-wide">
+      <div className="h-[25vh]  flex items-center justify-center">
+        <p className="text-3xl font-bold text-[#123458] tracking-wide ">
           พื้นที่เเจ้งข่าวสาร
         </p>
       </div>
@@ -46,10 +61,13 @@ const Homepage = () => {
       </div>
 
       {/* เนื้อหา */}
-      <div className="h-[65vh] overflow-y-auto px-6 py-4 bg-[#F1EFEC]">
+      <div
+        className="h-[65vh] overflow-y-auto px-6 py-4 "
+        style={{ backgroundColor: colors.background }}
+      >
         <div className="max-w-screen-lg mx-auto">
-          <h1 className="text-2xl font-bold mb-6 text-[#123458] text-center">
-          ร้านอาหารที่เปิดให้บริการวันนี้
+          <h1 className="text-2xl font-bold mt-4 mb-6 text-[#123458] text-center">
+            ร้านอาหารที่เปิดให้บริการวันนี้
           </h1>
 
           <div className="grid md:grid-cols-2 gap-6 ">
@@ -63,44 +81,50 @@ const Homepage = () => {
                 </h2>
 
                 {shop.ordered ? (
-  <div className="space-y-3 bg-[#F9F9F9] border border-gray-200 rounded-lg p-4">
-  <div>
-    <p className="text-sm font-semibold text-[#123458]">เมนูที่เลือก:</p>
-    <p className="text-base text-gray-800">{shop.order.menu}</p>
-  </div>
+                  <div className="space-y-3 bg-[#F9F9F9] border border-gray-200 rounded-lg p-4">
+                    <div>
+                      <p className="text-sm font-semibold text-[#123458]">
+                        เมนูที่เลือก:
+                      </p>
+                      <p className="text-base text-gray-800">
+                        {shop.order.menu}
+                      </p>
+                    </div>
 
-  <div>
-    <p className="text-sm font-semibold text-[#123458]">ระดับความเผ็ด:</p>
-    <p className="text-base text-gray-800">{shop.order.spice}</p>
-  </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#123458]">
+                        ระดับความเผ็ด:
+                      </p>
+                      <p className="text-base text-gray-800">
+                        {shop.order.spice}
+                      </p>
+                    </div>
 
-  <div>
-    <p className="text-sm font-semibold text-[#123458] mb-1">ออฟชันที่เลือก:</p>
-    <ul className="list-disc list-inside text-gray-700">
-      {Object.entries(shop.order.addons)
-        .filter(([_, val]) => val)
-        .map(([k, v]) => (
-          <li key={k}>
-            {k}: {v}
-          </li>
-        ))}
-    </ul>
-  </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#123458] mb-1">
+                        ออฟชันที่เลือก:
+                      </p>
+                      <ul className="list-disc list-inside text-gray-700">
+                        {Object.entries(shop.order.addons)
+                          .filter(([_, val]) => val)
+                          .map(([k, v]) => (
+                            <li key={k}>
+                              {k}: {v}
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
 
-  {shop.order.note && (
-    <div>
-      <p className="text-sm font-semibold text-[#123458]">หมายเหตุ:</p>
-      <p className="text-base text-gray-700">{shop.order.note}</p>
-    </div>
-  )}
-
-  {/* Optional: ปุ่มแก้ไข / ยกเลิก */}
-  <div className="flex gap-2 pt-2">
-    <button className="text-sm text-blue-600 hover:underline">แก้ไข</button>
-    <button className="text-sm text-red-500 hover:underline">ยกเลิก</button>
-  </div>
-</div>
-
+                    {/* Optional: ปุ่มแก้ไข / ยกเลิก */}
+                    <div className="flex gap-2 pt-2">
+                      <button className="text-sm text-blue-600 hover:underline">
+                        แก้ไข
+                      </button>
+                      <button className="text-sm text-red-500 hover:underline">
+                        ยกเลิก
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <OrderForm onSubmit={(data) => handleOrder(idx, data)} />
                 )}
@@ -197,18 +221,8 @@ const OrderForm = ({ onSubmit }) => {
         ))}
       </div>
 
-      {/* หมายเหตุ */}
-      <div>
-        <label className="block mb-1 font-medium">หมายเหตุเพิ่มเติม (ไม่บังคับ)</label>
-        <textarea
-          className="block w-full border border-gray-300 rounded-lg px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-[#123458]"
-          rows={2}
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder="เช่น ไม่ใส่ผักชี, เพิ่มน้ำซุป"
-        />
-      </div>
 
+   
       {/* ปุ่มส่ง */}
       <button
         onClick={handleSubmit}

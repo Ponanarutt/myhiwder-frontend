@@ -54,7 +54,7 @@ const addonOptions = {
 const spiceLevels = ["ไม่เผ็ด", "เผ็ดน้อย", "ปกติ", "เผ็ดมาก", "เผ็ดสุดๆ"];
 
 const autoSubmit = (data) => {
-  console.log("✅ Auto-submit:", data);
+  console.log(" Auto-submit:", data);
 };
 
 // ฟังก์ชั่นสำหรับหาประเภทเมนูหลักจากชื่อเมนูเต็ม
@@ -137,10 +137,10 @@ const Orderpage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen" style={{ backgroundColor: colors.background }}>
+    <div className="w-full min-h-screen px-4" style={{ backgroundColor: colors.background }}>
       <div className="max-w-full">
         {/* Header Section */}
-        <div className="mb-6 text-center pt-6 px-4">
+        <div className="mb-6 text-center pt-6 px-4 ">
           <h1 className="text-3xl font-bold" style={{ color: colors.headerBackground }}>สั่งอาหารกลางวันประจำสัปดาห์</h1>
         </div>
 

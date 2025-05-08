@@ -7,35 +7,49 @@ import {
 } from "react-icons/io5";
 import { FaRegClipboard } from "react-icons/fa";
 
-
 const navItems = [
   { label: "Home", icon: <IoHomeOutline />, key: "Home" },
   { label: "Order", icon: <FaRegClipboard />, key: "Order" },
   { label: "About", icon: <IoRibbonOutline />, key: "About" },
 ];
 
+
+
 const Header = ({ settopic }) => {
   const [isOpen, setIsOpen] = useState(true);
 
+  const handleToggle = () => {
+    if (window.innerWidth >= 640) {
+      setIsOpen(!isOpen);
+    }
+    else{
+      setIsOpen(false)
+    }
+  };
+  
   return (
     <div
       className={`h-screen ${
         isOpen ? "w-64" : "w-16"
-      } bg-[#F1EFEC] text-[#030303] flex flex-col px-3 py-6 border-r transition-all duration-300`}
+      } bg-[#F1EFEC] text-[#030303] flex flex-col px-3 py-6 border-r transition-all relative duration-300 drop-shadow-2xl `}
     >
       {/* Toggle */}
-      <div className={`flex items-center ${!isOpen?("justify-center"):("justify-between px-3")} mb-6 px-1 `}>
+      <div
+        className={`flex items-center ${
+          !isOpen ? "justify-center" : "justify-start px-3"
+        } mb-6 px-1 `}
+      >
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-xl text-[#123458] hover:scale-110 transition "
+          onClick={() => handleToggle()}
+          className="text-xl text-[#123458] hover:scale-110 transition  flex flex-row  items-center"
         >
           {isOpen ? <IoClose /> : <IoMenu />}
+          {isOpen && (
+            <h1 className="text-lg font-bold tracking-tight text-[#123458] uppercase">
+              Myhiwder
+            </h1>
+          )}
         </button>
-        {isOpen && (
-          <h1 className="text-lg font-bold tracking-tight text-[#123458] uppercase">
-            Myhiwder
-          </h1>
-        )}
       </div>
 
       {/* Nav */}
