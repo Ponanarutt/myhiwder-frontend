@@ -145,7 +145,7 @@ const Orderpage = () => {
         </div>
 
         {/* Table Section */}
-        <div className="overflow-hidden border rounded-sm" style={{ borderColor: colors.border }}>
+        <div className="overflow-hidden border rounded-2xl" style={{ borderColor: colors.border }}>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead style={{ backgroundColor: colors.headerBackground, color: colors.headerText }}>

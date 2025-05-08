@@ -29,64 +29,88 @@ const Homepage = () => {
   };
 
   return (
+    <div className="flex flex-col min-h-screen font-sans w-full">
+      {/* พื้นที่โฆษณา */}
+      <div className="h-[25vh] bg-gradient-to-b from-[#D4C9BE] to-[#F1EFEC] flex items-center justify-center">
+        <p className="text-3xl font-bold text-[#123458] tracking-wide">
+          พื้นที่เเจ้งข่าวสาร
+        </p>
+      </div>
 
-      <div className="flex flex-col min-h-screen font-sans w-full">
-        {/* พื้นที่โฆษณา */}
-        <div className="h-[40vh] bg-gradient-to-b from-[#D4C9BE] to-[#F1EFEC] flex items-center justify-center">
-          <p className="text-3xl font-bold text-[#123458] tracking-wide">
-            พื้นที่โฆษณา หรือโปรโมชั่นพิเศษ 🍜
-          </p>
-        </div>
-    
-        {/* แจ้งเตือน */}
-        <div className="h-[10vh] bg-gray-700 bg-opacity-90 text-white flex flex-col items-center justify-center text-center px-4">
-          <p className="text-base font-medium">วันนี้คุณสามารถเลือกจองอาหารจากร้านที่เปิดให้บริการด้านล่างได้</p>
-          <p className="text-sm text-pink-300">⏰ จองได้ก่อน 9:45 น. เท่านั้น</p>
-        </div>
-    
-        {/* เนื้อหา */}
-        <div className="h-[50vh] overflow-y-auto px-6 py-4 bg-[#F1EFEC]">
-          <div className="max-w-screen-lg mx-auto">
-            <h1 className="text-2xl font-bold mb-6 text-[#123458] text-center">
-              มื้อเที่ยงของคุณวันนี้ 🍱
-            </h1>
-    
-            <div className="grid md:grid-cols-2 gap-6 ">
-              {shops.map((shop, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white p-6 rounded-xl shadow-lg border border-[#D4C9BE] transition hover:shadow-2xl"
-                >
-                  <h2 className="text-lg font-semibold text-[#123458] mb-3">
-                    ร้าน: {shop.shopName}
-                  </h2>
-    
-                  {shop.ordered ? (
-                    <div className="text-[#030303] text-sm space-y-1">
-                      <p>เมนู: <strong>{shop.order.menu}</strong></p>
-                      <p>เผ็ด: {shop.order.spice}</p>
-                      <div className="mt-1">
-                        <p className="font-semibold text-[#123458] mb-1">ออฟชันที่เลือก:</p>
-                        <ul className="list-disc list-inside text-[#030303]">
-                          {Object.entries(shop.order.addons)
-                            .filter(([_, val]) => val)
-                            .map(([k, v]) => (
-                              <li key={k}>{k}: {v}</li>
-                            ))}
-                        </ul>
-                      </div>
-                    </div>
-                  ) : (
-                    <OrderForm onSubmit={(data) => handleOrder(idx, data)} />
-                  )}
-                </div>
-              ))}
-            </div>
+      {/* แจ้งเตือน */}
+      <div className="h-[10vh] bg-gray-700 bg-opacity-90 text-white flex flex-col items-center justify-center text-center px-4">
+        <p className="text-base font-medium">
+          วันนี้คุณสามารถเลือกจองอาหารจากร้านที่เปิดให้บริการด้านล่างได้
+        </p>
+        <p className="text-sm text-pink-300">⏰ จองได้ก่อน 9:45 น. เท่านั้น</p>
+      </div>
+
+      {/* เนื้อหา */}
+      <div className="h-[65vh] overflow-y-auto px-6 py-4 bg-[#F1EFEC]">
+        <div className="max-w-screen-lg mx-auto">
+          <h1 className="text-2xl font-bold mb-6 text-[#123458] text-center">
+          ร้านอาหารที่เปิดให้บริการวันนี้
+          </h1>
+
+          <div className="grid md:grid-cols-2 gap-6 ">
+            {shops.map((shop, idx) => (
+              <div
+                key={idx}
+                className="bg-white p-6 rounded-xl shadow-lg border border-[#D4C9BE] transition hover:shadow-2xl"
+              >
+                <h2 className="text-lg font-semibold text-gray-800 border-b pb-2 mb-3">
+                  ร้าน: {shop.shopName}
+                </h2>
+
+                {shop.ordered ? (
+  <div className="space-y-3 bg-[#F9F9F9] border border-gray-200 rounded-lg p-4">
+  <div>
+    <p className="text-sm font-semibold text-[#123458]">เมนูที่เลือก:</p>
+    <p className="text-base text-gray-800">{shop.order.menu}</p>
+  </div>
+
+  <div>
+    <p className="text-sm font-semibold text-[#123458]">ระดับความเผ็ด:</p>
+    <p className="text-base text-gray-800">{shop.order.spice}</p>
+  </div>
+
+  <div>
+    <p className="text-sm font-semibold text-[#123458] mb-1">ออฟชันที่เลือก:</p>
+    <ul className="list-disc list-inside text-gray-700">
+      {Object.entries(shop.order.addons)
+        .filter(([_, val]) => val)
+        .map(([k, v]) => (
+          <li key={k}>
+            {k}: {v}
+          </li>
+        ))}
+    </ul>
+  </div>
+
+  {shop.order.note && (
+    <div>
+      <p className="text-sm font-semibold text-[#123458]">หมายเหตุ:</p>
+      <p className="text-base text-gray-700">{shop.order.note}</p>
+    </div>
+  )}
+
+  {/* Optional: ปุ่มแก้ไข / ยกเลิก */}
+  <div className="flex gap-2 pt-2">
+    <button className="text-sm text-blue-600 hover:underline">แก้ไข</button>
+    <button className="text-sm text-red-500 hover:underline">ยกเลิก</button>
+  </div>
+</div>
+
+                ) : (
+                  <OrderForm onSubmit={(data) => handleOrder(idx, data)} />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    );
-    
+    </div>
+  );
 };
 
 const OrderForm = ({ onSubmit }) => {
@@ -117,68 +141,79 @@ const OrderForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 text-sm text-gray-800">
       {/* เมนูหลัก */}
-      <select
-        className="w-full border rounded px-3 py-2"
-        value={menu}
-        onChange={(e) => setMenu(e.target.value)}
-      >
-        <option value="">เลือกเมนู</option>
-        {menus.map((m, i) => (
-          <option key={i} value={m}>
-            {m}
-          </option>
-        ))}
-      </select>
+      <div>
+        <label className="block mb-1 font-medium">เมนูหลัก</label>
+        <select
+          className="block w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#123458] transition"
+          value={menu}
+          onChange={(e) => setMenu(e.target.value)}
+        >
+          <option value="">เลือกเมนู</option>
+          {menus.map((m, i) => (
+            <option key={i} value={m}>
+              {m}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* ระดับความเผ็ด */}
-      <select
-        className="w-full border rounded px-3 py-2"
-        value={spice}
-        onChange={(e) => setSpice(e.target.value)}
-      >
-        <option value="">เลือกระดับความเผ็ด</option>
-        {spices.map((s, i) => (
-          <option key={i} value={s}>
-            {s}
-          </option>
-        ))}
-      </select>
+      <div>
+        <label className="block mb-1 font-medium">ระดับความเผ็ด</label>
+        <select
+          className="block w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#123458] transition"
+          value={spice}
+          onChange={(e) => setSpice(e.target.value)}
+        >
+          <option value="">เลือกระดับความเผ็ด</option>
+          {spices.map((s, i) => (
+            <option key={i} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      {/* ออฟชันเสริม แยกตามกลุ่ม */}
-      <div className="grid grid-cols-2 gap-2">
+      {/* ออฟชันเสริม */}
+      <div className="grid grid-cols-2 gap-4">
         {Object.entries(addonGroups).map(([group, options]) => (
-          <select
-            key={group}
-            className="w-full border rounded px-2 py-1"
-            value={addons[group]}
-            onChange={(e) => handleAddonChange(group, e.target.value)}
-          >
-            <option value="">{group}</option>
-            {options.map((opt, i) => (
-              <option key={i} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+          <div key={group}>
+            <label className="block mb-1 font-medium">{group}</label>
+            <select
+              className="block w-full border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#123458] transition"
+              value={addons[group]}
+              onChange={(e) => handleAddonChange(group, e.target.value)}
+            >
+              <option value="">เลือก {group}</option>
+              {options.map((opt, i) => (
+                <option key={i} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
         ))}
       </div>
 
       {/* หมายเหตุ */}
-      <input
-        type="text"
-        className="w-full border rounded px-3 py-2"
-        placeholder="หมายเหตุ (ถ้ามี)"
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-      />
+      <div>
+        <label className="block mb-1 font-medium">หมายเหตุเพิ่มเติม (ไม่บังคับ)</label>
+        <textarea
+          className="block w-full border border-gray-300 rounded-lg px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-[#123458]"
+          rows={2}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="เช่น ไม่ใส่ผักชี, เพิ่มน้ำซุป"
+        />
+      </div>
 
       {/* ปุ่มส่ง */}
       <button
         onClick={handleSubmit}
         disabled={!menu || !spice}
-        className="mt-2 bg-[#123458] text-white px-4 py-2 rounded hover:bg-[#0f2d4b] transition"
+        className="w-full bg-[#123458] text-white font-semibold py-2 rounded-lg hover:bg-[#0f2d4b] transition disabled:opacity-50"
       >
         ยืนยันการสั่ง
       </button>

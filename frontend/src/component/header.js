@@ -6,12 +6,11 @@ import {
   IoClose,
 } from "react-icons/io5";
 import { FaRegClipboard } from "react-icons/fa";
-import { LuClock1 } from "react-icons/lu";
+
 
 const navItems = [
   { label: "Home", icon: <IoHomeOutline />, key: "Home" },
   { label: "Order", icon: <FaRegClipboard />, key: "Order" },
-  { label: "History", icon: <LuClock1 />, key: "History" },
   { label: "About", icon: <IoRibbonOutline />, key: "About" },
 ];
 
@@ -25,10 +24,10 @@ const Header = ({ settopic }) => {
       } bg-[#F1EFEC] text-[#030303] flex flex-col px-3 py-6 border-r transition-all duration-300`}
     >
       {/* Toggle */}
-      <div className="flex items-center justify-between mb-6 px-1">
+      <div className={`flex items-center ${!isOpen?("justify-center"):("justify-between px-3")} mb-6 px-1 `}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-xl text-[#123458] hover:scale-110 transition"
+          className="text-xl text-[#123458] hover:scale-110 transition "
         >
           {isOpen ? <IoClose /> : <IoMenu />}
         </button>

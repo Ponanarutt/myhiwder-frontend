@@ -64,7 +64,7 @@ const HomeA = () => {
         </div>
 
         <div className="flex gap-2">
-          {["Home", "Order", "Create", "History"].map((tab) => (
+          {["Home", "Order", "Create"].map((tab) => (
             <button
               key={tab}
               onClick={() => setTopicA(tab)}
