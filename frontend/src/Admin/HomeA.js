@@ -98,7 +98,7 @@ const HomeA = () => {
 
   return (
     <div
-      className="w-full min-h-screen p-4"
+      className="w-full min-h-screen p-4 min-w-[300px]"
       style={{ backgroundColor: colors.bgLight }}
     >
       <div className="flex justify-between items-center p-6 rounded-lg shadow-md mb-4 bg-white">

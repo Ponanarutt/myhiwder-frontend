@@ -42,7 +42,7 @@ const Homepage = () => {
 
   return (
     <div
-      className="flex flex-col min-h-screen font-sans w-full "
+      className="flex flex-col min-h-screen font-sans w-full min-w-[300px] "
       style={{ backgroundColor: colors.background }}
     >
       {/* พื้นที่โฆษณา */}
