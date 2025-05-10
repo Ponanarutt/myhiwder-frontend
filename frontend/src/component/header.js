@@ -6,6 +6,7 @@ import {
   IoClose,
 } from "react-icons/io5";
 import { FaRegClipboard } from "react-icons/fa";
+import GoogleButton from 'react-google-button'
 
 const navItems = [
   { label: "Home", icon: <IoHomeOutline />, key: "Home" },
@@ -13,20 +14,18 @@ const navItems = [
   { label: "About", icon: <IoRibbonOutline />, key: "About" },
 ];
 
-
-
 const Header = ({ settopic }) => {
   const [isOpen, setIsOpen] = useState(false);
+
 
   const handleToggle = () => {
     if (window.innerWidth >= 640) {
       setIsOpen(!isOpen);
-    }
-    else{
-      setIsOpen(false)
+    } else {
+      setIsOpen(false);
     }
   };
-  
+
   return (
     <div
       className={`h-screen ${
@@ -53,25 +52,32 @@ const Header = ({ settopic }) => {
       </div>
 
       {/* Nav */}
-      <div className="flex flex-col  gap-4">
-        {navItems.map((item) => (
-          <button
-            key={item.key}
-            onClick={() => settopic(item.key)}
-            className={`group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[#123458] hover:bg-[#D4C9BE]/50 transition-all duration-200 ${
-              isOpen ? "justify-start" : "justify-center"
-            }`}
-          >
-            <span className="text-xl">{item.icon}</span>
-            {isOpen ? (
-              <span>{item.label}</span>
-            ) : (
-              <span className="absolute left-full ml-2 w-max opacity-0 group-hover:opacity-100 bg-[#123458] text-white text-xs px-2 py-1 rounded shadow transition-opacity">
-                {item.label}
-              </span>
-            )}
-          </button>
-        ))}
+      <div className="flex flex-col  h-full justify-between">
+        <div className="flex flex-col  gap-4">
+          {navItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => settopic(item.key)}
+              className={`group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[#123458] hover:bg-[#D4C9BE]/50 transition-all duration-200 ${
+                isOpen ? "justify-start" : "justify-center"
+              }`}
+            >
+              <span className="text-xl">{item.icon}</span>
+              {isOpen ? (
+                <span>{item.label}</span>
+              ) : (
+                <span className="absolute left-full ml-2 w-max opacity-0 group-hover:opacity-100 bg-[#123458] text-white text-xs px-2 py-1 rounded shadow transition-opacity">
+                  {item.label}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+        <GoogleButton
+              type="dark"
+              className={`group relative flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[#123458] hover:bg-[#D4C9BE]/50 transition-all duration-200 ${
+                isOpen ? "justify-start" : "justify-center"
+              }`} >Login</GoogleButton>
       </div>
     </div>
   );

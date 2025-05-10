@@ -1,19 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import OrderForm from "./OrderForm";
+
 
 // ร้านอาหารเริ่มต้น (2 ร้าน)
 const defaultShops = [
-  { shopName: "ข้าวแกงคุณยาย", ordered: false, order: null },
-  { shopName: "ก๋วยเตี๋ยวฮ่องเต้", ordered: false, order: null },
+  { shopName: "ข้าวแกงคุณยาย", ordered: false, order: null, isEditing: false },
+  {
+    shopName: "ก๋วยเตี๋ยวฮ่องเต้",
+    ordered: false,
+    order: null,
+    isEditing: false,
+  },
 ];
-
-// กลุ่มออฟชันเสริม
-const addonGroups = {
-  ประเภท: ["น้ำ", "แห้ง"],
-  ข้าว: ["ข้าว", "ไม่เอาข้าว"],
-  ไข่: ["ไข่ดาว", "ไข่เจียว"],
-  เส้น: ["หมี่เหลือง", "หมี่ขาว", "เส้นเล็ก", "เส้นใหญ่"],
-};
 
 const colors = {
   background: "#f9f9f9",
@@ -30,6 +29,48 @@ const colors = {
 const Homepage = () => {
   const [shops, setShops] = useState(defaultShops);
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     // 👉 Your fetch or data refresh logic here
+  //     console.log("Fetching or updating data...");
+  
+  //     // Example: call an API and update `shops`
+  //     // fetch('/api/shops').then(res => res.json()).then(data => setShops(data));
+  //   }, 5000); // every 5000ms (5 seconds)
+  
+  //   // 🧹 Cleanup function to clear interval when component unmounts
+  //   return () => clearInterval(interval);
+  // }, []);
+  
+
+  const handleEdit = (idx) => {
+    const updated = [...shops];
+    updated[idx].isEditing = true;
+    setShops(updated);
+  };
+
+  const handleCancel = (idx) => {
+    const updated = [...shops];
+    updated[idx] = {
+      shopName: shops[idx].shopName, // คงชื่อร้านไว้
+      ordered: false,
+      order: null,
+      isEditing: false,
+    };
+    setShops(updated);
+  };
+
+  const handleReorder = (idx, orderData) => {
+    const updated = [...shops];
+    updated[idx] = {
+      ...updated[idx],
+      ordered: true,
+      order: orderData,
+      isEditing: false,
+    };
+    setShops(updated);
+  };
+
   const handleOrder = (idx, orderData) => {
     const updated = [...shops];
     updated[idx] = {
@@ -40,16 +81,19 @@ const Homepage = () => {
     setShops(updated);
   };
 
+
+
   return (
+
+  
     <div
-      className="flex flex-col min-h-screen font-sans w-full min-w-[300px] "
+      className="flex flex-col min-h-screen font-sans w-full min-w-[300px]  "
       style={{ backgroundColor: colors.background }}
     >
       {/* พื้นที่โฆษณา */}
-      <div className="h-[25vh]  flex items-center justify-center">
-        <p className="text-3xl font-bold text-[#123458] tracking-wide ">
-          พื้นที่เเจ้งข่าวสาร
-        </p>
+      <div className="h-[25vh] flex-col sm:flex-row   flex items-center justify-center gap-7">
+        <h1 className="hidden sm:flex text-sm sm:text-[40px] lg:text-[80px] font-mono">Leave rights</h1>
+        <img src="copy5.png" className="w-[80%] sm:w-[25%]" />
       </div>
 
       {/* แจ้งเตือน */}
@@ -80,10 +124,10 @@ const Homepage = () => {
                   ร้าน: {shop.shopName}
                 </h2>
 
-                {shop.ordered ? (
-                  <div className="space-y-3 bg-[#F9F9F9] border border-gray-200 rounded-lg p-4">
+                {shop.ordered && !shop.isEditing ? (
+                  <div className="space-y-4 bg-[#F9F9F9] border border-gray-200 rounded-lg p-4">
                     <div>
-                      <p className="text-sm font-semibold text-[#123458]">
+                      <p className="text-sm font-semibold text-[#123458] mb-1">
                         เมนูที่เลือก:
                       </p>
                       <p className="text-base text-gray-800">
@@ -92,7 +136,7 @@ const Homepage = () => {
                     </div>
 
                     <div>
-                      <p className="text-sm font-semibold text-[#123458]">
+                      <p className="text-sm font-semibold text-[#123458] mb-1">
                         ระดับความเผ็ด:
                       </p>
                       <p className="text-base text-gray-800">
@@ -100,33 +144,70 @@ const Homepage = () => {
                       </p>
                     </div>
 
-                    <div>
-                      <p className="text-sm font-semibold text-[#123458] mb-1">
-                        ออฟชันที่เลือก:
-                      </p>
-                      <ul className="list-disc list-inside text-gray-700">
-                        {Object.entries(shop.order.addons)
-                          .filter(([_, val]) => val)
-                          .map(([k, v]) => (
-                            <li key={k}>
-                              {k}: {v}
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
+                    {shop.order.vegetable && (
+                      <div>
+                        <p className="text-sm font-semibold text-[#123458] mb-1">
+                          กินผักมั้ย:
+                        </p>
+                        <p className="text-base text-gray-800">
+                          {shop.order.vegetable}
+                        </p>
+                      </div>
+                    )}
 
-                    {/* Optional: ปุ่มแก้ไข / ยกเลิก */}
-                    <div className="flex gap-2 pt-2">
-                      <button className="text-sm text-blue-600 hover:underline">
+                    {shop.order.portion && (
+                      <div>
+                        <p className="text-sm font-semibold text-[#123458] mb-1">
+                          พิเศษมั้ย:
+                        </p>
+                        <p className="text-base text-gray-800">
+                          {shop.order.portion}
+                        </p>
+                      </div>
+                    )}
+
+                    {shop.order.addons &&
+                      Object.values(shop.order.addons).some((val) => val) && (
+                        <div>
+                          <p className="text-sm font-semibold text-[#123458] mb-1">
+                            ออฟชันที่เลือก:
+                          </p>
+                          <ul className="list-disc list-inside text-gray-700">
+                            {Object.entries(shop.order.addons)
+                              .filter(([_, val]) => val)
+                              .map(([k, v]) => (
+                                <li key={k}>
+                                  {k}: {v}
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      )}
+
+                    <div className="flex gap-4 pt-3">
+                      <button
+                        className="text-sm text-blue-600 hover:underline"
+                        onClick={() => handleEdit(idx)}
+                      >
                         แก้ไข
                       </button>
-                      <button className="text-sm text-red-500 hover:underline">
+                      <button
+                        className="text-sm text-red-500 hover:underline"
+                        onClick={() => handleCancel(idx)}
+                      >
                         ยกเลิก
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <OrderForm onSubmit={(data) => handleOrder(idx, data)} />
+                  <OrderForm
+                    onSubmit={(data) =>
+                      shop.ordered
+                        ? handleReorder(idx, data)
+                        : handleOrder(idx, data)
+                    }
+                    initialData={shop.order}
+                  />
                 )}
               </div>
             ))}
@@ -134,105 +215,9 @@ const Homepage = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
-const OrderForm = ({ onSubmit }) => {
-  const [menu, setMenu] = useState("");
-  const [spice, setSpice] = useState("");
-  const [note, setNote] = useState("");
-  const [addons, setAddons] = useState({
-    ประเภท: "",
-    ข้าว: "",
-    ไข่: "",
-    เส้น: "",
-  });
-
-  const menus = ["ข้าวกะเพรา", "ก๋วยเตี๋ยวน้ำ", "ข้าวไข่เจียว"];
-  const spices = ["ไม่เผ็ด", "เผ็ดน้อย", "เผ็ดปกติ"];
-
-  const handleAddonChange = (group, value) => {
-    setAddons((prev) => ({ ...prev, [group]: value }));
-  };
-
-  const handleSubmit = () => {
-    onSubmit({
-      menu,
-      spice,
-      addons,
-      note,
-    });
-  };
-
-  return (
-    <div className="space-y-4 text-sm text-gray-800">
-      {/* เมนูหลัก */}
-      <div>
-        <label className="block mb-1 font-medium">เมนูหลัก</label>
-        <select
-          className="block w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#123458] transition"
-          value={menu}
-          onChange={(e) => setMenu(e.target.value)}
-        >
-          <option value="">เลือกเมนู</option>
-          {menus.map((m, i) => (
-            <option key={i} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* ระดับความเผ็ด */}
-      <div>
-        <label className="block mb-1 font-medium">ระดับความเผ็ด</label>
-        <select
-          className="block w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#123458] transition"
-          value={spice}
-          onChange={(e) => setSpice(e.target.value)}
-        >
-          <option value="">เลือกระดับความเผ็ด</option>
-          {spices.map((s, i) => (
-            <option key={i} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* ออฟชันเสริม */}
-      <div className="grid grid-cols-2 gap-4">
-        {Object.entries(addonGroups).map(([group, options]) => (
-          <div key={group}>
-            <label className="block mb-1 font-medium">{group}</label>
-            <select
-              className="block w-full border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#123458] transition"
-              value={addons[group]}
-              onChange={(e) => handleAddonChange(group, e.target.value)}
-            >
-              <option value="">เลือก {group}</option>
-              {options.map((opt, i) => (
-                <option key={i} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
-      </div>
-
-
-   
-      {/* ปุ่มส่ง */}
-      <button
-        onClick={handleSubmit}
-        disabled={!menu || !spice}
-        className="w-full bg-[#123458] text-white font-semibold py-2 rounded-lg hover:bg-[#0f2d4b] transition disabled:opacity-50"
-      >
-        ยืนยันการสั่ง
-      </button>
-    </div>
-  );
-};
 
 export default Homepage;

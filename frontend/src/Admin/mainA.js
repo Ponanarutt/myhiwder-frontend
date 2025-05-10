@@ -39,7 +39,10 @@ const MainA = ( {initialShops} ) => {
     text: "rgb(3, 3, 3)"
   };
 
+
   return (
+
+    
     <div className="mt-6 flex flex-col lg:flex-row gap-6">
       {/* ด้านซ้าย: รายการร้านค้า */}
       <div className="lg:w-3/5 w-full">
